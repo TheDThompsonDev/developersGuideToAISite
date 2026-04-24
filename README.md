@@ -1,166 +1,126 @@
-# The Developer's Guide to AI — Landing Page
+# The Developer's Guide to AI: From Prompts to Agents
 
-Production-ready Next.js 15 App Router landing page, built for the book _The Developer's Guide to AI: From Prompts to Agents_ (No Starch Press, 2026).
+> **Stop building toy AI demos. Ship production AI.**
 
-## What changed vs. the previous version
-
-The rewrite is organized around three goals: **conversion**, **SEO**, and **editorial gravitas**.
-
-### Conversion
-
-- **Sharp positioning**: The subtitle "From Prompts to Agents" is now the site's center of gravity. It communicates journey + scope instantly.
-- **Real features**: The old Features section pitched a different book. Rewritten around the five actual parts (LLMs → Prompts → RAG → Fine-Tuning → Agents) with specific promises instead of hype.
-- **Complete Table of Contents**: Every chapter + page number, using native `<details>` for server-rendered interactivity.
-- **Who Is / Isn't For You**: Sharp qualification section reduces bad-fit buyers and boosts good-fit ones.
-- **Testimonials**: Placeholder structure ready for real blurbs. Editorial-style pull quotes, not carousel cards.
-- **Free Chapter 1 email capture**: Single highest-ROI addition. Builds your launch list.
-- **Rich author bios**: Pulled directly from the book. Real outbound links (focus.dev, jerrymannel.me, dthompsondev.com).
-- **Comprehensive FAQ**: Twelve questions answering real developer skepticism.
-- **Retailer hierarchy**: No Starch featured, Amazon + B&N supporting. Real pricing.
-- **Sticky mobile buy bar**: Always-visible CTA on mobile.
-
-### SEO
-
-- **Fully server-rendered**: Only the email form is `'use client'`. H1 and all critical content is indexed.
-- **Rich metadata**: OpenGraph, Twitter Card, canonical URL, comprehensive keywords.
-- **Three JSON-LD schemas**: Book + FAQPage + BreadcrumbList. This unlocks rich-card treatment and expandable FAQ in Google results.
-- **sitemap.xml + robots.txt**: Via Next.js conventions (`app/sitemap.ts`, `app/robots.ts`).
-- **Semantic HTML**: `<article>`, `<figure>`, `<blockquote>`, `<details>`, `<header>`, `<footer>`, `<nav>` used correctly.
-
-### Design
-
-- **Editorial technical authority**: Feels like a book, not a SaaS landing page.
-- **Typography**: Instrument Serif (display + italic subtitle) · Geist Sans (body) · JetBrains Mono (chapter numbers, ISBN, spec lines).
-- **Palette**: Near-black ink (#0A0A0A), warm bone cream (#F5F1E8), signal yellow (#F4CE14).
-- **Structural motifs**: Roman numerals for parts, chapter numbers in mono, rule lines, editorial kicker text, "Fig. 001" corner marks.
+A hands-on field guide for working developers — covering LLMs, prompt engineering, vector databases, RAG, fine-tuning, and autonomous agents. Published by **No Starch Press**.
 
 ---
 
-## Launch Checklist
+## The Problem This Book Solves
 
-Before you go live, handle these:
+You've played with ChatGPT. You've wired up the OpenAI API. You can get an AI to respond.
 
-### Critical (blocks launch)
+But when you try to ship it — really ship it, in production, with real users — things fall apart. The demos don't hold up. The prompts behave differently at scale. The retrieval is wrong. The agent loops. You're not sure when to use RAG, when to fine-tune, and when a prompt is just enough.
 
-- [ ] **Update retailer URLs** in `components/Retailers.tsx` — real No Starch page, Amazon ASIN, B&N URL.
-- [ ] **Replace `SITE_URL`** in `app/layout.tsx`, `app/sitemap.ts`, `app/robots.ts`, and `components/BookSchema.tsx` with your production URL.
-- [ ] **Add cover image** to `/public/cover.png` (3:4 aspect ratio recommended).
-- [ ] **Add OG image** to `/public/og.png` (1200x630, displayed when links are shared on social media). Can be auto-generated via Next's `opengraph-image.tsx` file convention if you'd rather.
-- [ ] **Add favicon** to `/public/favicon.ico` and `/public/apple-touch-icon.png`.
-- [ ] **Replace placeholder testimonials** in `components/Testimonials.tsx` and `components/SocialProof.tsx` with real quotes.
-- [ ] **Add author photos** to `/public/authors/jacob.jpg`, `/public/authors/jerry.jpg`, `/public/authors/danny.jpg` (square, ~600x600).
+**This book closes that gap.**
 
-### High priority
-
-- [ ] **Wire up email capture**: `components/EmailCapture.tsx` posts to `/api/subscribe`. Create that route (see below) pointing at your mailing list provider (ConvertKit, Resend, Mailchimp, Beehiiv, etc.).
-- [ ] **Confirm publication date and page count** match reality — currently showing 2026 / 304 pages in `BookSchema.tsx` and Hero.
-- [ ] **Verify ISBNs** in `components/BookSchema.tsx`, `components/Footer.tsx`, and `components/Hero.tsx`.
-
-### Nice to have before launch
-
-- [ ] Once reviews roll in, uncomment the `aggregateRating` block in `components/BookSchema.tsx` to get star ratings in search results.
-- [ ] Add an `opengraph-image.tsx` file in `app/` to auto-generate a branded share card.
-- [ ] Add analytics (Vercel Analytics, Plausible, or Fathom are all privacy-friendly options).
-- [ ] A/B test the Hero subhead and CTAs once you have traffic.
+It's not about the theory. It's not about the next model. It's the engineering playbook that tells you _how to build_, _when to use each technique_, and _what goes wrong in production_ — written by three engineers who've shipped real AI systems.
 
 ---
 
-## Project Structure
+## What's Inside
 
-```
-book-site/
-├── app/
-│   ├── layout.tsx          # Fonts, metadata, JSON-LD injection
-│   ├── page.tsx            # Section composition
-│   ├── globals.css         # Design tokens + utilities
-│   ├── sitemap.ts          # SEO
-│   └── robots.ts           # SEO
-├── components/
-│   ├── BookSchema.tsx      # JSON-LD (Book + FAQPage + Breadcrumbs)
-│   ├── Nav.tsx             # Sticky nav, mobile via <details>
-│   ├── Hero.tsx            # H1, subtitle, book cover, CTAs, specs
-│   ├── SocialProof.tsx     # Early-reader blurbs under hero
-│   ├── Features.tsx        # The 5 parts as promise cards
-│   ├── TableOfContents.tsx # Full TOC with leader dots
-│   ├── Testimonials.tsx    # Large editorial pull quotes
-│   ├── WhoFor.tsx          # For / Not For sharp qualification
-│   ├── EmailCapture.tsx    # Free Chapter 1 (only 'use client')
-│   ├── Authors.tsx         # Rich bios + outbound links
-│   ├── FAQ.tsx             # 12 Q&A (exported for schema)
-│   ├── Retailers.tsx       # Conversion destination
-│   ├── StickyBuyBar.tsx    # Mobile persistent CTA
-│   └── Footer.tsx          # Publisher credit + ISBN + legal
-└── public/
-    ├── cover.png           # ⚠️ Add book cover
-    ├── og.png              # ⚠️ Add OG image
-    ├── favicon.ico
-    ├── apple-touch-icon.png
-    └── authors/
-        ├── jacob.jpg       # ⚠️ Add headshots
-        ├── jerry.jpg
-        └── danny.jpg
-```
+Five parts. One journey from your first LLM call to deploying autonomous agents.
+
+| Part    | Topic                    | Chapters                                                         |
+| ------- | ------------------------ | ---------------------------------------------------------------- |
+| **I**   | Getting Started with AI  | Local LLMs with Ollama, streaming with Express, Python + FastAPI |
+| **II**  | Prompt Engineering       | Fundamentals, advanced techniques, prompts in production code    |
+| **III** | Vector Databases & RAG   | Vector DBs in practice, designing a full RAG system              |
+| **IV**  | Adapting Models          | Why (and when) to fine-tune, data prep, fine-tuning in practice  |
+| **V**   | Building Agentic Systems | Workflows to agents, building an agent, extending with tools     |
+
+**304 pages. 14 chapters. Real code throughout.**
+
+Languages used: JavaScript/TypeScript (Node + Express) and Python (FastAPI).
 
 ---
 
-## Dependencies
+## What You'll Build
 
-Install these in your existing Next.js project:
+By the time you finish, you will have:
+
+- Shipped an LLM-powered app running on **your own hardware** (no API key required for Part I)
+- Written production-grade prompts that **behave consistently** at scale
+- Built a working **RAG pipeline** with a real vector database
+- Made informed decisions about **when to fine-tune** vs. when to prompt
+- Deployed an **autonomous agent** capable of real tool use
+
+---
+
+## Who This Is For
+
+**This book is for you if:**
+
+- You've used ChatGPT or Claude and want to go from API wrapper to real system
+- You're comfortable with TypeScript or Python and have shipped production code
+- You're tired of AI tutorials that fall apart on contact with real users
+- You want to understand when to use RAG, when to fine-tune, and when a prompt is enough
+
+**This book is not for you if:**
+
+- You've never shipped code before (come back after your first few projects)
+- You want ML theory, transformer math, or training models from scratch
+- You're looking for copy-paste prompts instead of engineering understanding
+
+---
+
+## The Authors
+
+**Danny Thompson** — Host of The Programming Podcast (globally top-ranked), organizer of the Commit Your Code conference, keynote speaker at international conferences.
+
+**Jacob Orshalick** — Software architect, 20+ years of experience, independent consultant, co-author of _Seam Framework: Experience the Evolution of Java EE_.
+
+**Jerry M. Reghunadh** — Senior director at a global product organization, systems architect, international conference speaker, two decades in engineering.
+
+Technical review by **Nikhil Kapoor** (16+ years in AI/ML).
+
+---
+
+## Early Reader Feedback
+
+> _"The gap between 'tried ChatGPT once' and 'ship this in production' is where most developers get stuck. This book closes that gap with real code, real decisions, and zero hand-waving."_
+> — Staff Engineer, Early Reader
+
+> _"Most AI books explain the technology. This one teaches you the taste — when to reach for RAG, when a prompt is enough, when you need an agent. That's the part nobody writes about."_
+> — Principal Engineer, Early Reader
+
+> _"I've been building LLM features for two years and still learned something in every part."_
+> — Tech Lead, Early Reader
+
+---
+
+## Get the Book
+
+| Retailer                                                           | Format                   | Price       |
+| ------------------------------------------------------------------ | ------------------------ | ----------- |
+| [**Amazon**](https://amazon.com/dp/1718504764) ⭐ Recommended      | Paperback + Kindle       | From $59.99 |
+| [No Starch Press](https://nostarch.com/developers-guide-ai)        | Paperback + ebook bundle | From $59.95 |
+| [Barnes & Noble](https://barnesandnoble.com/w/developers-guide-ai) | Paperback + Nook         | From $59.95 |
+
+**ISBN:** 978-1-7185-0476-9 (print) · 978-1-7185-0477-6 (ebook)
+
+---
+
+## Read Chapter 1 Free
+
+Not ready to buy? Get Chapter 1 sent directly to your inbox — 28 pages, 15 minutes, actual code.
+
+**[Get Chapter 1 → devguidetoai.com](https://devguidetoai.com#chapter1)**
+
+---
+
+## About This Repository
+
+This repository contains the source code for the official book landing page at **[devguidetoai.com](https://devguidetoai.com)**.
+
+Built with Next.js 16 (App Router), deployed on Vercel.
 
 ```bash
-npm install geist
-```
-
-For fonts: `next/font/google` imports are built-in. Geist is self-hosted; alternatively, use `import { GeistSans } from 'geist/font/sans'` for zero-config.
-
-Tailwind v4 is assumed (note the `@import "tailwindcss";` and `@theme` block in `globals.css`). If you're on Tailwind v3, convert the `@theme` CSS tokens into `tailwind.config.ts` `theme.extend`.
-
----
-
-## Sample email-capture API route
-
-Drop this in `app/api/subscribe/route.ts`:
-
-```ts
-import { NextResponse } from 'next/server';
-
-export async function POST(request: Request) {
-  const { email } = await request.json();
-  if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 });
-
-  // Example: ConvertKit
-  // await fetch(`https://api.convertkit.com/v3/forms/${FORM_ID}/subscribe`, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({ api_key: process.env.CONVERTKIT_API_KEY, email }),
-  // });
-
-  // Example: Resend (send the chapter PDF as an attachment)
-  // await resend.emails.send({...});
-
-  return NextResponse.json({ success: true });
-}
+npm install
+npm run dev
 ```
 
 ---
 
-## Design Notes
-
-- The `'use client'` directive is only used in `EmailCapture.tsx` (form state). Everything else is server-rendered, which is what you wanted for SEO.
-- `TableOfContents` and `FAQ` use native `<details>` elements for expand/collapse — zero client JS, fully accessible, indexable by Google.
-- The mobile nav also uses `<details>` for the same reason.
-- Ambient yellow glows are CSS-only (`.ambient-glow` class), not images. Cheap to render, no LCP cost.
-- The noise overlay is a tiny inline SVG — sub-1KB, renders instantly.
-- Font loading uses `next/font` with `display: swap` to avoid FOUT while keeping good Core Web Vitals.
-- All animations respect `prefers-reduced-motion`.
-
----
-
-## Questions, tweaks, ideas?
-
-The copy, structure, and design are all open to iteration. Obvious next experiments:
-
-1. A video trailer or podcast episode embed near the Hero.
-2. A second email-capture near the bottom of the page with a different hook.
-3. An "In the Press" or "As Seen On" logos bar once the book gets coverage.
-4. A comparison block vs. other AI books ("How this is different from _Building LLMs for Production_ / _Generative Deep Learning_ / etc.").
+_Published by No Starch Press · San Francisco · 2026_

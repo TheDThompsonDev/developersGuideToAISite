@@ -59,8 +59,8 @@ export function InsideTheBook() {
                 </span>
               </div>
 
-              <div className="px-6 py-10 lg:px-12 lg:py-16">
-                <blockquote className="font-display text-4xl lg:text-6xl leading-[1.05] text-bone">
+              <div className="px-4 py-8 lg:px-12 lg:py-16">
+                <blockquote className="font-display text-3xl lg:text-6xl leading-[1.05] text-bone">
                   "Better data beats<br />
                   <em className="font-display-italic text-signal">bigger prompts.</em>"
                 </blockquote>
@@ -95,7 +95,7 @@ export function InsideTheBook() {
                 </span>
               </div>
 
-              <div className="px-6 py-10 lg:px-12 lg:py-12">
+              <div className="px-4 py-8 lg:px-12 lg:py-12">
                 <p className="text-bone-muted mb-8 leading-relaxed max-w-2xl">
                   Production RAG requires more than naive similarity search. Here we implement Multi-Query Retrieval to handle ambiguous user intent, increasing our semantic coverage across the vectorstore.
                 </p>
@@ -234,7 +234,7 @@ export function InsideTheBook() {
                 </span>
               </div>
 
-              <div className="px-6 py-10 lg:px-12 lg:py-12">
+              <div className="px-4 py-8 lg:px-12 lg:py-12">
                 <p className="text-bone-muted mb-8 leading-relaxed max-w-2xl">
                   Every AI codebase has to pick an abstraction level — raw SDK, lightweight
                   wrapper, or full framework. The book's trade-off curve:

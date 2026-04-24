@@ -8,7 +8,7 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-8 flex flex-col">
             <div className="flex flex-wrap items-center gap-4 mb-6 rise">
               <span className="inline-flex items-center gap-2 px-3 py-1 bg-signal text-ink font-mono text-xs font-bold uppercase tracking-widest border-2 border-signal">
                 <span
@@ -30,7 +30,7 @@ export function Hero() {
               </p>
             </div>
 
-            <h1 className="font-sans text-xl lg:text-2xl text-bone-muted max-w-2xl leading-relaxed rise rise-delay-2 mb-10 border-l-4 border-signal pl-6">
+            <h1 className="font-sans text-xl lg:text-2xl text-bone-muted max-w-2xl leading-relaxed rise rise-delay-2 mb-8 border-l-4 border-signal pl-6">
               <strong className="text-bone font-medium">
                 The Developer's Guide to AI
               </strong>{" "}
@@ -40,7 +40,24 @@ export function Hero() {
               <span className="text-bone">autonomous agents</span>.
             </h1>
 
-            <div className="flex flex-col sm:flex-row gap-4 mt-8 rise rise-delay-3">
+            {/* Book cover — visible on mobile between text and buttons, hidden on desktop (shown in right column) */}
+            <div className="lg:hidden rise rise-delay-2 mb-8">
+              <div className="relative aspect-[3/4] w-44 border-4 border-ink-3 bg-ink-2 shadow-[12px_12px_0px_rgba(239,255,0,0.1)] group">
+                <Image
+                  src="/book-cover.png"
+                  alt="The Developer's Guide to AI Book Cover"
+                  fill
+                  sizes="176px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  priority
+                />
+                <div className="absolute -top-3 -right-3 bg-signal text-ink font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 border-2 border-ink rotate-3 shadow-[3px_3px_0px_#000]">
+                  Fig. 001
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 rise rise-delay-3">
               <Link
                 href="#retailers"
                 className="cta-brutal cta-brutal-primary px-8 py-5 text-lg"
@@ -69,17 +86,17 @@ export function Hero() {
             </div>
           </div>
 
+          {/* Book cover — desktop right column only */}
           <div className="lg:col-span-4 relative rise rise-delay-2 hidden lg:block">
-            <div className="relative aspect-[3/4] border-4 border-ink-3 bg-ink-2 shadow-[20px_20px_0px_rgba(239,255,0,0.1)] group">
+            <div className="relative aspect-[3/4] w-full border-4 border-ink-3 bg-ink-2 shadow-[20px_20px_0px_rgba(239,255,0,0.1)] group">
               <Image
                 src="/book-cover.png"
                 alt="The Developer's Guide to AI Book Cover"
                 fill
-                sizes="(max-width: 1024px) 100vw, 33vw"
+                sizes="33vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 priority
               />
-
               <div className="absolute -top-4 -right-4 bg-signal text-ink font-mono text-xs font-bold uppercase tracking-widest px-4 py-2 border-2 border-ink rotate-3 shadow-[4px_4px_0px_#000]">
                 Fig. 001
               </div>

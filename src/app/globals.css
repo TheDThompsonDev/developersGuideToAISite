@@ -427,12 +427,17 @@ details[open] .chevron {
   min-width: 1.5rem;
 }
 
-/* Mobile — tabs stack as horizontal-scroll on narrow viewports */
 @media (max-width: 640px) {
   .excerpt-tabs {
-    grid-template-columns: repeat(4, minmax(10rem, 1fr));
-    overflow-x: auto;
+    grid-template-columns: repeat(2, 1fr);
+    overflow-x: unset;
   }
-  .excerpt-tab { padding: 1rem 0.75rem; }
-  .excerpt-tab-label { font-size: 1rem; }
+  .excerpt-tab {
+    padding: 0.875rem 0.75rem;
+    border-right: 1px solid var(--color-ink-3);
+    border-bottom: 1px solid var(--color-ink-3);
+  }
+  .excerpt-tab:nth-child(2n) { border-right: none; }
+  .excerpt-tab:nth-last-child(-n+2) { border-bottom: none; }
+  .excerpt-tab-label { font-size: 0.9rem; }
 }
