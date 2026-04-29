@@ -46,3 +46,4 @@ export function StickyBuyBar() {
     </div>
   );
 }
+

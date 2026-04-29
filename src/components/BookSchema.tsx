@@ -166,3 +166,4 @@ export function BookSchema({ siteUrl }: BookSchemaProps) {
     </>
   );
 }
+

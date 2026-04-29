@@ -21,26 +21,26 @@ const toc = [
     part: 'III',
     title: 'Vector Databases and RAG',
     chapters: [
-      { n: '7', title: 'Vector Databases in Practice', page: 129 },
-      { n: '8', title: 'Designing a Retrieval-Augmented Generation System', page: 159 },
+      { n: '7', title: 'Vector Databases in Practice', page: 131 },
+      { n: '8', title: 'Designing a Retrieval-Augmented Generation System', page: 161 },
     ],
   },
   {
     part: 'IV',
     title: 'Adapting Models to Real-World Tasks',
     chapters: [
-      { n: '9', title: 'Why and When to Customize a Model', page: 195 },
-      { n: '10', title: 'Preparing Data for Fine-Tuning', page: 205 },
-      { n: '11', title: 'Fine-Tuning Models in Practice', page: 217 },
+      { n: '9', title: 'Why and When to Customize a Model', page: 197 },
+      { n: '10', title: 'Preparing Data for Fine-Tuning', page: 207 },
+      { n: '11', title: 'Fine-Tuning Models in Practice', page: 219 },
     ],
   },
   {
     part: 'V',
     title: 'Building Agentic Systems',
     chapters: [
-      { n: '12', title: 'From Workflows to Autonomous Agents', page: 245 },
-      { n: '13', title: 'Building an Autonomous Agent', page: 251 },
-      { n: '14', title: 'Extending Agents with Tools', page: 257 },
+      { n: '12', title: 'From Workflows to Autonomous Agents', page: 247 },
+      { n: '13', title: 'Building an Autonomous Agent', page: 253 },
+      { n: '14', title: 'Extending Agents with Tools', page: 259 },
     ],
   },
 ];
@@ -100,3 +100,4 @@ export function TableOfContents() {
     </section>
   );
 }
+

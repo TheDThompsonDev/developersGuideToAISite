@@ -2,7 +2,7 @@
 
 > **Stop building toy AI demos. Ship production AI.**
 
-A hands-on field guide for working developers — covering LLMs, prompt engineering, vector databases, RAG, fine-tuning, and autonomous agents. Published by **No Starch Press**.
+A hands-on field guide for working developers - covering LLMs, prompt engineering, vector databases, RAG, fine-tuning, and autonomous agents. Published by **No Starch Press**.
 
 ---
 
@@ -10,11 +10,11 @@ A hands-on field guide for working developers — covering LLMs, prompt engineer
 
 You've played with ChatGPT. You've wired up the OpenAI API. You can get an AI to respond.
 
-But when you try to ship it — really ship it, in production, with real users — things fall apart. The demos don't hold up. The prompts behave differently at scale. The retrieval is wrong. The agent loops. You're not sure when to use RAG, when to fine-tune, and when a prompt is just enough.
+But when you try to ship it - really ship it, in production, with real users - things fall apart. The demos don't hold up. The prompts behave differently at scale. The retrieval is wrong. The agent loops. You're not sure when to use RAG, when to fine-tune, and when a prompt is just enough.
 
 **This book closes that gap.**
 
-It's not about the theory. It's not about the next model. It's the engineering playbook that tells you _how to build_, _when to use each technique_, and _what goes wrong in production_ — written by three engineers who've shipped real AI systems.
+It's not about the theory. It's not about the next model. It's the engineering playbook that tells you _how to build_, _when to use each technique_, and _what goes wrong in production_ - written by three engineers who've shipped real AI systems.
 
 ---
 
@@ -67,11 +67,11 @@ By the time you finish, you will have:
 
 ## The Authors
 
-**Danny Thompson** — Host of The Programming Podcast (globally top-ranked), organizer of the Commit Your Code conference, keynote speaker at international conferences.
+**Danny Thompson** - Host of The Programming Podcast (globally top-ranked), organizer of the Commit Your Code conference, keynote speaker at international conferences.
 
-**Jacob Orshalick** — Software architect, 20+ years of experience, independent consultant, co-author of _Seam Framework: Experience the Evolution of Java EE_.
+**Jacob Orshalick** - Software architect, 20+ years of experience, independent consultant, co-author of _Seam Framework: Experience the Evolution of Java EE_.
 
-**Jerry M. Reghunadh** — Senior director at a global product organization, systems architect, international conference speaker, two decades in engineering.
+**Jerry M. Reghunadh** - Senior director at a global product organization, systems architect, international conference speaker, two decades in engineering.
 
 Technical review by **Nikhil Kapoor** (16+ years in AI/ML).
 
@@ -80,13 +80,13 @@ Technical review by **Nikhil Kapoor** (16+ years in AI/ML).
 ## Early Reader Feedback
 
 > _"The gap between 'tried ChatGPT once' and 'ship this in production' is where most developers get stuck. This book closes that gap with real code, real decisions, and zero hand-waving."_
-> — Staff Engineer, Early Reader
+> - Staff Engineer, Early Reader
 
-> _"Most AI books explain the technology. This one teaches you the taste — when to reach for RAG, when a prompt is enough, when you need an agent. That's the part nobody writes about."_
-> — Principal Engineer, Early Reader
+> _"Most AI books explain the technology. This one teaches you the taste - when to reach for RAG, when a prompt is enough, when you need an agent. That's the part nobody writes about."_
+> - Principal Engineer, Early Reader
 
 > _"I've been building LLM features for two years and still learned something in every part."_
-> — Tech Lead, Early Reader
+> - Tech Lead, Early Reader
 
 ---
 
@@ -104,7 +104,7 @@ Technical review by **Nikhil Kapoor** (16+ years in AI/ML).
 
 ## Read Chapter 1 Free
 
-Not ready to buy? Get Chapter 1 sent directly to your inbox — 28 pages, 15 minutes, actual code.
+Not ready to buy? Get Chapter 1 sent directly to your inbox - 28 pages, 15 minutes, actual code.
 
 **[Get Chapter 1 → devguidetoai.com](https://devguidetoai.com#chapter1)**
 
@@ -124,3 +124,4 @@ npm run dev
 ---
 
 _Published by No Starch Press · San Francisco · 2026_
+

@@ -38,3 +38,4 @@ export function RevealOnScroll({ children }: { children: React.ReactNode }) {
 
   return <div ref={ref}>{children}</div>;
 }
+

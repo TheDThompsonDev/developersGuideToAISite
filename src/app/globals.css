@@ -14,7 +14,7 @@
   --color-bone-muted: #A3A3A3;    /* Cool gray for secondary text */
   --color-ash: #666666;           /* Tertiary text */
   
-  --color-signal: #fae37d;        /* Acid yellow — harsh, digital, unmissable */
+  --color-signal: #fae37d;        /* Acid yellow - harsh, digital, unmissable */
   --color-signal-dim: rgba(219, 189, 55, 0.15);
   
   --color-rust: #FF3300;          /* Aggressive red for extreme urgency */
@@ -264,7 +264,7 @@ details[open] .chevron {
    CSS-only tabs via radio + :checked + ~ sibling selectors.
    ============================================ */
 
-/* Hide the radio inputs — we drive everything via the labels */
+/* Hide the radio inputs - we drive everything via the labels */
 .excerpt-viewer input[type="radio"] {
   position: absolute;
   width: 1px;
@@ -324,7 +324,7 @@ details[open] .chevron {
   color: var(--color-ash);
 }
 
-/* Active tab state — driven by the corresponding :checked radio */
+/* Active tab state - driven by the corresponding :checked radio */
 .excerpt-viewer:has(#excerpt-tab-1:checked) .excerpt-tab[data-tab="1"],
 .excerpt-viewer:has(#excerpt-tab-2:checked) .excerpt-tab[data-tab="2"],
 .excerpt-viewer:has(#excerpt-tab-3:checked) .excerpt-tab[data-tab="3"],
@@ -359,13 +359,13 @@ details[open] .chevron {
   color: var(--color-signal);
 }
 
-/* Keyboard focus — visible ring on the active label */
+/* Keyboard focus - visible ring on the active label */
 .excerpt-viewer input[type="radio"]:focus-visible + .excerpt-tabs .excerpt-tab {
   outline: 2px solid var(--color-signal);
   outline-offset: -2px;
 }
 
-/* Panels — show only the active one */
+/* Panels - show only the active one */
 .excerpt-panels {
   border: 1px solid var(--color-ink-3);
   background: var(--color-ink-2);
@@ -380,7 +380,7 @@ details[open] .chevron {
   display: block;
 }
 
-/* Panel header — chapter metadata */
+/* Panel header - chapter metadata */
 .excerpt-header {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--color-ink-3);
@@ -391,7 +391,7 @@ details[open] .chevron {
   .excerpt-header { padding: 1rem 3rem; }
 }
 
-/* Code block — book-quality monospace with annotations */
+/* Code block - book-quality monospace with annotations */
 .excerpt-code {
   background: var(--color-ink);
   border: 1px solid var(--color-ink-3);
@@ -441,3 +441,4 @@ details[open] .chevron {
   .excerpt-tab:nth-last-child(-n+2) { border-bottom: none; }
   .excerpt-tab-label { font-size: 0.9rem; }
 }
+

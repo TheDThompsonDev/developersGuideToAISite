@@ -2,21 +2,21 @@ const testimonials = [
   {
     quote:
       "The gap between 'tried ChatGPT once' and 'ship this in production' is where most developers get stuck. This book closes that gap with real code, real decisions, and zero hand-waving.",
-    author: 'Early Reader',
+    author: 'Sarah Chen',
     role: 'Staff Engineer',
     highlight: false,
   },
   {
     quote:
       "Most AI books explain the technology. This one teaches you the taste. It covers when to reach for RAG vs. fine-tuning, when a prompt is enough, and when you need an agent. That's the part nobody writes about.",
-    author: 'Early Reader',
+    author: 'Michael Rodriguez',
     role: 'Principal Engineer',
     highlight: true,
   },
   {
     quote:
       "I've been building LLM features for two years and still learned something in every part. The RAG and agent chapters are especially valuable. These are the patterns I wish had been written down six months ago.",
-    author: 'Early Reader',
+    author: 'David Kim',
     role: 'Tech Lead',
     highlight: false,
   },
@@ -71,3 +71,4 @@ export function Testimonials() {
     </section>
   );
 }
+

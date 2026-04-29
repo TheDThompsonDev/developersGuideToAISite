@@ -39,7 +39,7 @@ export function EmailCapture() {
             Free Evaluation
           </p>
           <h2 className="font-display text-4xl lg:text-5xl leading-[0.95] mb-4 uppercase">
-            Read Chapter 1. <br />
+            Read Chapters 1 & 2. <br />
             <span className="italic text-ash">Judge for yourself.</span>
           </h2>
           <p className="text-lg font-mono text-ash mb-6">
@@ -91,7 +91,7 @@ export function EmailCapture() {
                 disabled={status === "loading"}
                 className="cta-brutal cta-brutal-primary w-full py-4 text-sm"
               >
-                {status === "loading" ? "TRANSMITTING..." : "SEND ME CHAPTER 1"}
+                {status === "loading" ? "TRANSMITTING..." : "SEND ME CHAPTERS 1 & 2"}
               </button>
 
               {status === "error" && (
@@ -109,3 +109,4 @@ export function EmailCapture() {
     </section>
   );
 }
+

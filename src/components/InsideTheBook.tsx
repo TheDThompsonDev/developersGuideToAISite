@@ -13,11 +13,11 @@ export function InsideTheBook() {
           </h2>
           <p className="mt-6 text-lg text-bone-muted max-w-2xl leading-relaxed">
             Four excerpts, pulled directly from the book. A maxim, two production code samples,
-            and a decision framework. This is the voice of the book — unedited.
+            and a decision framework. This is the voice of the book - unedited.
           </p>
         </div>
 
-        {/* Tabbed viewer — CSS-only via radio + :checked */}
+        {/* Tabbed viewer - CSS-only via radio + :checked */}
         <div className="excerpt-viewer">
           {/* Hidden radio inputs drive the tab state */}
           <input type="radio" name="excerpt-tab" id="excerpt-tab-1" defaultChecked className="sr-only peer/t1" />
@@ -49,7 +49,7 @@ export function InsideTheBook() {
             </label>
           </div>
 
-          {/* Tab panels — all rendered, active one shown via CSS */}
+          {/* Tab panels - all rendered, active one shown via CSS */}
           <div className="excerpt-panels">
             {/* ============ TAB 1: THE MAXIM ============ */}
             <article className="excerpt-panel" data-panel="1">
@@ -73,54 +73,73 @@ export function InsideTheBook() {
                   </div>
                   <div className="lg:col-span-10">
                     <p className="text-lg text-bone-muted leading-relaxed">
-                      Every retrieval trick in this chapter — better chunking, smarter
-                      retrieval, re-ranking, citations — depends on having clean,
+                      Every retrieval trick in this chapter - better chunking, smarter
+                      retrieval, re-ranking, citations - depends on having clean,
                       current, and trustworthy sources. Treat data quality like a
                       first-class feature of your pipeline, not an afterthought.
                     </p>
                     <p className="mt-5 font-display-italic text-xl text-bone">
                       "When answers are wrong, observability is how you debug the
-                      pipeline — not the prompt."
+                      pipeline - not the prompt."
                     </p>
                   </div>
                 </div>
               </div>
             </article>
 
-            {/* ============ TAB 2: THE RAG CODE (TypeScript) ============ */}
+            {/* ============ TAB 2: THE RAG CODE (Python) ============ */}
             <article className="excerpt-panel" data-panel="2">
               <div className="excerpt-header">
                 <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-ash">
-                  Chapter 8 · Building RAG Pipelines · p. 201
+                  Chapter 8 · Building RAG Pipelines · p. 180
                 </span>
               </div>
 
               <div className="px-4 py-8 lg:px-12 lg:py-12">
                 <p className="text-bone-muted mb-8 leading-relaxed max-w-2xl">
-                  Production RAG requires more than naive similarity search. Here we implement Multi-Query Retrieval to handle ambiguous user intent, increasing our semantic coverage across the vectorstore.
+                  Production RAG requires robust data ingestion. Here we build a document store that handles chunking, deterministic IDs, and metadata preservation, ensuring we can trace every retrieved snippet back to its source.
                 </p>
 
                 <pre className="excerpt-code">
                   <code>
-                    <span className="code-comment">{'// From: part3/rag/retrieval.ts'}</span>{'\n'}
-                    <span className="code-kw">import</span> {'{ Document }'} <span className="code-kw">from</span> <span className="code-string">'@langchain/core/documents'</span>;{'\n'}
-                    <span className="code-kw">import</span> {'{ OpenAIEmbeddings }'} <span className="code-kw">from</span> <span className="code-string">'@langchain/openai'</span>;{'\n'}
-                    <span className="code-kw">import</span> {'{ PineconeStore }'} <span className="code-kw">from</span> <span className="code-string">'@langchain/pinecone'</span>;{'\n'}
+                    <span className="code-comment"># From: part3/rag/store.py</span>{'\n'}
+                    <span className="code-kw">class</span> <span className="code-type">MultiDocumentVectorStore</span>:{'\n'}
+                    {'    '}<span className="code-marker">❶</span> <span className="code-kw">def</span> <span className="code-fn">__init__</span>(self, documents: List[Document]):{'\n'}
+                    {'        '}embedding_function = <span className="code-fn">OllamaEmbeddingFunction</span>({'\n'}
+                    {'            '}url=<span className="code-string">"http://localhost:11434"</span>,{'\n'}
+                    {'            '}model_name=<span className="code-string">"mxbai-embed-large"</span>{'\n'}
+                    {'        '}){'\n'}
+                    {'        '}client = chromadb.<span className="code-fn">Client</span>(){'\n'}
+                    {'        '}self.collection: Collection = client.<span className="code-fn">create_collection</span>({'\n'}
+                    {'            '}name=<span className="code-string">"examples_readme"</span>,{'\n'}
+                    {'            '}embedding_function=embedding_function,{'\n'}
+                    {'        '}){'\n'}
                     {'\n'}
-                    <span className="code-marker">❶</span> <span className="code-kw">export async function</span> <span className="code-fn">retrieveContext</span>(query: <span className="code-type">string</span>) {'{'}{'\n'}
-                    {'  '}<span className="code-kw">const</span> vectorstore = <span className="code-kw">await</span> PineconeStore.fromExistingIndex({'\n'}
-                    {'    '}<span className="code-kw">new</span> OpenAIEmbeddings(),{'\n'}
-                    {'    '}{'{ pineconeIndex: index }'}{'\n'}
-                    {'  '});{'\n'}
+                    {'        '}<span className="code-marker">❷</span> <span className="code-kw">for</span> doc_idx, document <span className="code-kw">in</span> <span className="code-fn">enumerate</span>(documents):{'\n'}
+                    {'            '}splitter = RecursiveCharacterTextSplitter.<span className="code-fn">from_language</span>({'\n'}
+                    {'                '}language=<span className="code-string">"markdown"</span>, chunk_size=<span className="code-const">1500</span>){'\n'}
+                    {'            '}document_chunks = splitter.<span className="code-fn">split_text</span>(document.content){'\n'}
                     {'\n'}
-                    {'  '}<span className="code-marker">❷</span> <span className="code-comment">{'// Generate 3 variations of the query for semantic coverage'}</span>{'\n'}
-                    {'  '}<span className="code-kw">const</span> variations = <span className="code-kw">await</span> <span className="code-fn">generateQueryVariations</span>(query);{'\n'}
-                    {'  '}<span className="code-kw">const</span> retrievedDocs = <span className="code-kw">await</span> Promise.all({'\n'}
-                    {'    '}<span className="code-marker">❸</span> variations.map((v) {`=>`} vectorstore.similaritySearch(v, 3)){'\n'}
-                    {'  '});{'\n'}
+                    {'            '}<span className="code-kw">for</span> chunk_idx, document_chunk <span className="code-kw">in</span> <span className="code-fn">enumerate</span>(document_chunks):{'\n'}
+                    {'                '}self.collection.<span className="code-fn">add</span>({'\n'}
+                    {'                    '}documents=document_chunk,{'\n'}
+                    {'                    '}<span className="code-marker">❸</span> ids=<span className="code-string">f"doc_</span>{'{doc_idx + 1}'}<span className="code-string">_</span>{'{chunk_idx + 1}'}<span className="code-string">"</span>,{'\n'}
+                    {'                    '}<span className="code-marker">❹</span> metadatas={'{'}<span className="code-string">"source_url"</span>: document.source_url{'}'}{'\n'}
+                    {'                '}){'\n'}
                     {'\n'}
-                    {'  '}<span className="code-marker">❹</span> <span className="code-kw">return</span> <span className="code-fn">deduplicateDocuments</span>(retrievedDocs.flat());{'\n'}
-                    {'}'}
+                    {'    '}<span className="code-kw">def</span> <span className="code-fn">query</span>(self, question: <span className="code-type">str</span>):{'\n'}
+                    {'        '}results = self.collection.<span className="code-fn">query</span>(query_texts=[question], n_results=<span className="code-const">3</span>){'\n'}
+                    {'        '}document_chunk_results = results.<span className="code-fn">get</span>(<span className="code-string">'documents'</span>)[<span className="code-const">0</span>]{'\n'}
+                    {'        '}<span className="code-marker">❺</span> document_chunk_metadatas = results.<span className="code-fn">get</span>(<span className="code-string">'metadatas'</span>)[<span className="code-const">0</span>]{'\n'}
+                    {'        '}documents: List[Document] = []{'\n'}
+                    {'\n'}
+                    {'        '}<span className="code-marker">❻</span> <span className="code-kw">for</span> result_idx, document_chunk <span className="code-kw">in</span> <span className="code-fn">enumerate</span>(document_chunk_results):{'\n'}
+                    {'            '}documents.<span className="code-fn">append</span>(Document({'\n'}
+                    {'                '}<span className="code-marker">❼</span> source_url=document_chunk_metadatas[result_idx].<span className="code-fn">get</span>(<span className="code-string">'source_url'</span>),{'\n'}
+                    {'                '}content=document_chunk{'\n'}
+                    {'            '})){'\n'}
+                    {'\n'}
+                    {'        '}<span className="code-kw">return</span> documents{'\n'}
                   </code>
                 </pre>
 
@@ -128,19 +147,31 @@ export function InsideTheBook() {
                 <ul className="mt-8 grid md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
                   <li className="flex gap-3 text-bone-muted">
                     <span className="code-marker shrink-0">❶</span>
-                    <span>The core retrieval function, wrapping our Pinecone connection.</span>
+                    <span>Initializes a local Ollama embedding function and ChromaDB collection.</span>
                   </li>
                   <li className="flex gap-3 text-bone-muted">
                     <span className="code-marker shrink-0">❷</span>
-                    <span>An LLM sub-call generates multiple semantic angles of the same question.</span>
+                    <span>Loops through documents and chunks them using a Markdown-aware text splitter.</span>
                   </li>
                   <li className="flex gap-3 text-bone-muted">
                     <span className="code-marker shrink-0">❸</span>
-                    <span>Parallel execution of similarity searches across all query variations.</span>
+                    <span>Assigns a deterministic composite ID based on the document and chunk indices.</span>
                   </li>
                   <li className="flex gap-3 text-bone-muted">
                     <span className="code-marker shrink-0">❹</span>
-                    <span>Flattening and deduplicating the results ensures high-quality context without token waste.</span>
+                    <span>Attaches metadata to track the original source URL for each chunk.</span>
+                  </li>
+                  <li className="flex gap-3 text-bone-muted">
+                    <span className="code-marker shrink-0">❺</span>
+                    <span>Retrieves the metadata array from the vector search results.</span>
+                  </li>
+                  <li className="flex gap-3 text-bone-muted">
+                    <span className="code-marker shrink-0">❻</span>
+                    <span>Loops over the query results to reconstruct the objects.</span>
+                  </li>
+                  <li className="flex gap-3 text-bone-muted md:col-span-2">
+                    <span className="code-marker shrink-0">❼</span>
+                    <span>Preserves the original source URL metadata into the retrieved objects.</span>
                   </li>
                 </ul>
               </div>
@@ -158,7 +189,7 @@ export function InsideTheBook() {
                 <p className="text-bone-muted mb-8 leading-relaxed max-w-2xl">
                   Here's how the book teaches an agent to <em>do</em> things, not just talk
                   about them. The <code className="text-signal font-mono text-sm">@tool</code> decorator
-                  registers a Python function — and the docstring is what the LLM reads
+                  registers a Python function - and the docstring is what the LLM reads
                   to decide when and how to call it.
                 </p>
 
@@ -167,7 +198,9 @@ export function InsideTheBook() {
                   <code>
                     <span className="code-comment"># From: part5/agents/tools.py</span>
                     {'\n'}
-                    <span className="code-kw">from</span> smolagents <span className="code-kw">import</span> tool, CodeAgent, LiteLLMModel
+                    <span className="code-kw">from</span> langchain_core.tools <span className="code-kw">import</span> tool
+                    {'\n'}
+                    <span className="code-kw">from</span> langgraph.prebuilt <span className="code-kw">import</span> create_react_agent
                     {'\n\n'}
                     <span className="code-marker">❶</span> <span className="code-decorator">@tool</span>
                     {'\n'}
@@ -188,15 +221,9 @@ export function InsideTheBook() {
                     {'\n        '}
                     f.write(data)
                     {'\n\n'}
-                    agent = <span className="code-fn">CodeAgent</span>(
-                    {'\n    '}
-                    <span className="code-marker">❺</span> tools=[save_file],
-                    {'\n    '}
-                    model=model,
-                    {'\n    '}
-                    add_base_tools=<span className="code-const">True</span>,
+                    <span className="code-marker">❺</span> tools = [save_file]
                     {'\n'}
-                    )
+                    agent = <span className="code-fn">create_react_agent</span>(model, tools)
                   </code>
                 </pre>
 
@@ -208,7 +235,7 @@ export function InsideTheBook() {
                   </li>
                   <li className="flex gap-3 text-bone-muted">
                     <span className="code-marker shrink-0">❷</span>
-                    <span>Type hints matter — the agent uses them to validate inputs.</span>
+                    <span>Type hints matter - the agent uses them to validate inputs.</span>
                   </li>
                   <li className="flex gap-3 text-bone-muted">
                     <span className="code-marker shrink-0">❸</span>
@@ -216,7 +243,7 @@ export function InsideTheBook() {
                   </li>
                   <li className="flex gap-3 text-bone-muted">
                     <span className="code-marker shrink-0">❹</span>
-                    <span>A real filesystem operation — the agent can now persist state.</span>
+                    <span>A real filesystem operation - the agent can now persist state.</span>
                   </li>
                   <li className="flex gap-3 text-bone-muted md:col-span-2">
                     <span className="code-marker shrink-0">❺</span>
@@ -236,7 +263,7 @@ export function InsideTheBook() {
 
               <div className="px-4 py-8 lg:px-12 lg:py-12">
                 <p className="text-bone-muted mb-8 leading-relaxed max-w-2xl">
-                  Every AI codebase has to pick an abstraction level — raw SDK, lightweight
+                  Every AI codebase has to pick an abstraction level - raw SDK, lightweight
                   wrapper, or full framework. The book's trade-off curve:
                 </p>
 
@@ -276,7 +303,7 @@ export function InsideTheBook() {
 
                 <blockquote className="mt-10 pt-8 border-t border-ink-3">
                   <p className="font-display-italic text-2xl lg:text-3xl text-bone leading-snug">
-                    "Choose the level that removes your biggest current bottleneck —
+                    "Choose the level that removes your biggest current bottleneck -
                     and be ready to slide up or down the stack as those bottlenecks
                     change."
                   </p>
@@ -303,3 +330,4 @@ export function InsideTheBook() {
     </section>
   );
 }
+

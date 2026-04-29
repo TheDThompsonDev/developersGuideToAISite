@@ -40,7 +40,7 @@ export function Hero() {
               <span className="text-bone">autonomous agents</span>.
             </h1>
 
-            {/* Book cover — visible on mobile between text and buttons, hidden on desktop (shown in right column) */}
+            {/* Book cover - visible on mobile between text and buttons, hidden on desktop (shown in right column) */}
             <div className="lg:hidden rise rise-delay-2 mb-8">
               <div className="relative aspect-[3/4] w-44 border-4 border-ink-3 bg-ink-2 shadow-[12px_12px_0px_rgba(239,255,0,0.1)] group">
                 <Image
@@ -86,7 +86,7 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Book cover — desktop right column only */}
+          {/* Book cover - desktop right column only */}
           <div className="lg:col-span-4 relative rise rise-delay-2 hidden lg:block">
             <div className="relative aspect-[3/4] w-full border-4 border-ink-3 bg-ink-2 shadow-[20px_20px_0px_rgba(239,255,0,0.1)] group">
               <Image
@@ -107,3 +107,4 @@ export function Hero() {
     </section>
   );
 }
+

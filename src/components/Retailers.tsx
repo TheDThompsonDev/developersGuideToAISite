@@ -115,9 +115,9 @@ export function Retailers() {
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8 text-center">
         <p className="kicker mb-5">Get the Book</p>
         <h2 className="font-display text-5xl lg:text-6xl text-bone leading-[1.05] mb-6">
-          Available now.
+          Available to pre-order.
           <br />
-          <em className="font-display-italic text-signal">Ship this week.</em>
+          <em className="font-display-italic text-signal text-4xl lg:text-5xl">Ships June 9, earlier if ordered from No Starch.</em>
         </h2>
         <p className="text-lg text-bone-muted max-w-2xl mx-auto mb-6">
           Paperback, ebook, and Kindle formats. Pick your retailer.
@@ -215,3 +215,4 @@ export function Retailers() {
     </section>
   );
 }
+

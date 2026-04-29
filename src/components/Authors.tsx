@@ -56,7 +56,7 @@ export function Authors() {
             Three engineers.
             <br />
             <em className="font-display-italic text-signal">
-              Forty years combined
+              Over fifty years combined
             </em>{" "}
             in the field.
           </h2>
