@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
+import Script from "next/script";
 import { BookSchema } from "../components/BookSchema";
 import "./globals.css";
 
@@ -104,6 +105,22 @@ export default function RootLayout({
       lang="en"
       className={`${bricolageGrotesque.variable} ${jetBrainsMono.variable} ${geist.variable}`}
     >
+      <head>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-VQCE09GP5S"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-VQCE09GP5S');
+          `}
+        </Script>
+      </head>
       <body className="antialiased bg-ink text-bone font-sans">
         <BookSchema siteUrl={SITE_URL} />
         {children}
