@@ -10,6 +10,7 @@ import { WhoFor } from "../components/WhoFor";
 import { Authors } from "../components/Authors";
 import { FAQ } from "../components/FAQ";
 import { Retailers } from "../components/Retailers";
+import { NewsletterForm } from "../components/NewsletterForm";
 import { Footer } from "../components/Footer";
 import { StickyBuyBar } from "../components/StickyBuyBar";
 import { RevealOnScroll } from "../components/RevealOnScroll";
@@ -66,6 +67,9 @@ export default function Home() {
           </div>
           <div className="reveal">
             <Retailers />
+          </div>
+          <div className="reveal">
+            <NewsletterForm />
           </div>
         </RevealOnScroll>
       </main>
