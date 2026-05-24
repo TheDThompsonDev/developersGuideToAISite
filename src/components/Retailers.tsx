@@ -43,7 +43,7 @@ const retailers = [
     role: "Direct from publisher",
     price: "From $59.95",
     note: "Paperback + ebook bundle, best for authors",
-    url: "https://nostarch.com/developers-guide-ai",
+    url: "https://nostarch.com/developers-guide-to-ai",
     cta: "Buy Direct",
     featured: false,
     icon: (
@@ -77,7 +77,7 @@ const retailers = [
     role: "Online & in-store",
     price: "From $59.95",
     note: "Paperback and Nook ebook",
-    url: "https://barnesandnoble.com/w/developers-guide-ai",
+    url: "https://www.barnesandnoble.com/w/the-developers-guide-to-ai-jacob-orshalick/1148828031",
     cta: "Buy at B&N",
     featured: false,
     icon: (

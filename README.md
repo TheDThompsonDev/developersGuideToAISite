@@ -102,11 +102,11 @@ Technical review by **Nikhil Kapoor** (16+ years in AI/ML).
 
 ---
 
-## Read Chapter 1 Free
+## Read Chapters 1 & 2 Free
 
-Not ready to buy? Get Chapter 1 sent directly to your inbox - 28 pages, 15 minutes, actual code.
+Not ready to buy? Get Chapters 1 & 2 sent directly to your inbox - 28 pages, 15 minutes, actual code.
 
-**[Get Chapter 1 → devguidetoai.com](https://devguidetoai.com#chapter1)**
+**[Get Chapters 1 & 2 → devguidetoai.com](https://devguidetoai.com#chapter1)**
 
 ---
 

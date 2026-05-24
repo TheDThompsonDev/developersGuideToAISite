@@ -66,7 +66,7 @@ export function Hero() {
                 <span className="ml-3 font-normal opacity-70">From $59</span>
               </Link>
               <Link href="#chapter1" className="cta-brutal px-8 py-5 text-lg">
-                Read Chapter 1 Free
+                Read Chapter 1 & 2 Free
               </Link>
             </div>
 

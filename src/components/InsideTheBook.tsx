@@ -491,7 +491,7 @@ export function InsideTheBook() {
             href="#chapter1"
             className="inline-flex items-center gap-2 text-sm text-bone hover:text-signal transition-colors"
           >
-            Get Chapter 1 in your inbox
+            Get Chapters 1 & 2 in your inbox
             <span aria-hidden="true">→</span>
           </Link>
         </div>
