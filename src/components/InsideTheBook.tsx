@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export function InsideTheBook() {
   return (
     <section
@@ -485,15 +483,15 @@ export function InsideTheBook() {
         {/* Footer CTA */}
         <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-8 border-t border-ink-3">
           <p className="text-sm text-ash font-mono">
-            These are four excerpts out of 304 pages.
+            These are four excerpts out of 320 pages.
           </p>
-          <Link
+          <a
             href="#chapter1"
             className="inline-flex items-center gap-2 text-sm text-bone hover:text-signal transition-colors"
           >
             Get Chapters 1 & 2 in your inbox
             <span aria-hidden="true">→</span>
-          </Link>
+          </a>
         </div>
       </div>
     </section>

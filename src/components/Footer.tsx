@@ -53,11 +53,11 @@ export function Footer() {
               The Book
             </div>
             <ul className="space-y-2.5 text-sm">
-              <li><Link href="#features" className="text-bone-muted hover:text-signal">What's Inside</Link></li>
-              <li><Link href="#contents" className="text-bone-muted hover:text-signal">Contents</Link></li>
-              <li><Link href="#authors" className="text-bone-muted hover:text-signal">Authors</Link></li>
-              <li><Link href="#faq" className="text-bone-muted hover:text-signal">FAQ</Link></li>
-              <li><Link href="#retailers" className="text-bone-muted hover:text-signal">Where to Buy</Link></li>
+              <li><a href="#features" className="text-bone-muted hover:text-signal">What's Inside</a></li>
+              <li><a href="#contents" className="text-bone-muted hover:text-signal">Contents</a></li>
+              <li><a href="#authors" className="text-bone-muted hover:text-signal">Authors</a></li>
+              <li><a href="#faq" className="text-bone-muted hover:text-signal">FAQ</a></li>
+              <li><a href="#retailers" className="text-bone-muted hover:text-signal">Where to Buy</a></li>
             </ul>
           </div>
 
@@ -77,7 +77,7 @@ export function Footer() {
 
         <div className="mt-16 pt-8 border-t border-ink-3 flex flex-col md:flex-row justify-between gap-4 font-mono text-[11px] text-ash">
           <div>
-            © {year} Jacob Orshalick, Jerry M. Reghunadh, Danny Thompson.
+            © {year} Danny Thompson, Jacob Orshalick, Jerry M. Reghunadh.
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-1">
             <span>ISBN 978-1-7185-0476-9 (print)</span>

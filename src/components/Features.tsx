@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 const parts = [
   {
     roman: 'I',
@@ -103,13 +101,13 @@ export function Features() {
         </div>
 
         <div className="mt-16 text-center">
-          <Link
+          <a
             href="#contents"
             className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-ash hover:text-signal transition-colors"
           >
             See the full table of contents
             <span aria-hidden="true">↓</span>
-          </Link>
+          </a>
         </div>
       </div>
     </section>

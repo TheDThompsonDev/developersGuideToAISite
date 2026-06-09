@@ -50,7 +50,7 @@ export function BookSchema({ siteUrl }: BookSchemaProps) {
     },
     inLanguage: 'en',
     datePublished: '2026',
-    numberOfPages: 304,
+    numberOfPages: 320,
     bookFormat: 'https://schema.org/Paperback',
     isbn: '978-1-7185-0476-9',
     workExample: [

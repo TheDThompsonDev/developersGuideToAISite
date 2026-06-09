@@ -1,25 +1,41 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { BuyBookModal } from "./BuyBookModal";
 
 export function StickyBuyBar() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isRetailersVisible, setIsRetailersVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 600) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(window.scrollY > 600);
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (!isVisible) return null;
+  useEffect(() => {
+    const retailers = document.getElementById("retailers");
+    if (!retailers) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsRetailersVisible(entry.isIntersecting);
+      },
+      {
+        rootMargin: "-25% 0px -35% 0px",
+        threshold: 0,
+      }
+    );
+
+    observer.observe(retailers);
+    return () => observer.disconnect();
+  }, []);
+
+  if (!isVisible || isRetailersVisible) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 pointer-events-none flex justify-center lg:justify-end lg:items-end lg:p-8">
@@ -35,12 +51,11 @@ export function StickyBuyBar() {
 
         <div className="flex items-center gap-4 w-full lg:w-auto">
           <div className="font-mono text-sm text-bone font-bold">$59</div>
-          <Link
-            href="#retailers"
+          <BuyBookModal
             className="cta-brutal cta-brutal-primary px-6 py-3 text-sm flex-1 lg:flex-none text-center"
           >
             Buy Now
-          </Link>
+          </BuyBookModal>
         </div>
       </div>
     </div>

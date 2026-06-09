@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { BuyBookModal } from "./BuyBookModal";
 
 export function Hero() {
   return (
@@ -15,7 +15,7 @@ export function Hero() {
                   className="w-2 h-2 bg-ink rounded-full animate-pulse"
                   aria-hidden="true"
                 />
-                Shipping 2026
+                Available Now
               </span>
               <span className="font-mono text-xs text-bone-muted tracking-wider uppercase">
                 No Starch Press
@@ -58,16 +58,15 @@ export function Hero() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 rise rise-delay-3">
-              <Link
-                href="#retailers"
+              <BuyBookModal
                 className="cta-brutal cta-brutal-primary px-8 py-5 text-lg"
               >
                 Buy the Book
                 <span className="ml-3 font-normal opacity-70">From $59</span>
-              </Link>
-              <Link href="#chapter1" className="cta-brutal px-8 py-5 text-lg">
+              </BuyBookModal>
+              <a href="#chapter1" className="cta-brutal px-8 py-5 text-lg">
                 Read Chapter 1 & 2 Free
-              </Link>
+              </a>
             </div>
 
             <div className="mt-12 flex flex-wrap gap-8 font-mono text-xs text-bone-muted uppercase tracking-widest rise rise-delay-4 border-t border-ink-3 pt-6">
@@ -77,7 +76,7 @@ export function Hero() {
               </div>
               <div>
                 <span className="text-ash block mb-1">Length</span>
-                304 Pages, 5 Parts
+                320 Pages, 5 Parts
               </div>
               <div>
                 <span className="text-ash block mb-1">Focus</span>

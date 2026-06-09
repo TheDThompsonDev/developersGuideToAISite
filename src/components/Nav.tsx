@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BuyBookModal } from './BuyBookModal';
 
 export function Nav() {
   return (
@@ -24,36 +25,35 @@ export function Nav() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-10">
-            <Link
+            <a
               href="#features"
               className="text-sm text-bone-muted hover:text-signal transition-colors"
             >
               What&apos;s Inside
-            </Link>
-            <Link
+            </a>
+            <a
               href="#contents"
               className="text-sm text-bone-muted hover:text-signal transition-colors"
             >
               Contents
-            </Link>
-            <Link
+            </a>
+            <a
               href="#authors"
               className="text-sm text-bone-muted hover:text-signal transition-colors"
             >
               Authors
-            </Link>
-            <Link
+            </a>
+            <a
               href="#faq"
               className="text-sm text-bone-muted hover:text-signal transition-colors"
             >
               FAQ
-            </Link>
-            <Link
-              href="#retailers"
+            </a>
+            <BuyBookModal
               className="text-sm font-medium px-4 py-2 bg-signal text-ink hover:bg-bone transition-colors"
             >
               Buy the Book
-            </Link>
+            </BuyBookModal>
           </nav>
 
           <details className="md:hidden relative">
@@ -63,25 +63,24 @@ export function Nav() {
               </svg>
             </summary>
             <div className="absolute right-0 top-full mt-2 w-56 bg-ink-2 border border-ink-3 py-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-              <Link href="#features" className="block px-4 py-2 text-sm text-bone-muted hover:bg-ink-3 hover:text-signal">
+              <a href="#features" className="block px-4 py-2 text-sm text-bone-muted hover:bg-ink-3 hover:text-signal">
                 What&apos;s Inside
-              </Link>
-              <Link href="#contents" className="block px-4 py-2 text-sm text-bone-muted hover:bg-ink-3 hover:text-signal">
+              </a>
+              <a href="#contents" className="block px-4 py-2 text-sm text-bone-muted hover:bg-ink-3 hover:text-signal">
                 Contents
-              </Link>
-              <Link href="#authors" className="block px-4 py-2 text-sm text-bone-muted hover:bg-ink-3 hover:text-signal">
+              </a>
+              <a href="#authors" className="block px-4 py-2 text-sm text-bone-muted hover:bg-ink-3 hover:text-signal">
                 Authors
-              </Link>
-              <Link href="#faq" className="block px-4 py-2 text-sm text-bone-muted hover:bg-ink-3 hover:text-signal">
+              </a>
+              <a href="#faq" className="block px-4 py-2 text-sm text-bone-muted hover:bg-ink-3 hover:text-signal">
                 FAQ
-              </Link>
+              </a>
               <div className="border-t border-ink-3 mt-2 pt-2">
-                <Link
-                  href="#retailers"
+                <BuyBookModal
                   className="block mx-2 px-3 py-2 text-sm font-medium bg-signal text-ink text-center"
                 >
                   Buy the Book
-                </Link>
+                </BuyBookModal>
               </div>
             </div>
           </details>

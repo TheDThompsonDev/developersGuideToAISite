@@ -30,7 +30,11 @@
    ============================================ */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 96px;
+}
+
+:where(section[id]) {
+  scroll-margin-top: 96px;
 }
 
 body {
@@ -123,7 +127,7 @@ body {
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-center: center;
+  justify-content: center;
   border: 2px solid var(--color-signal);
   background: var(--color-ink);
   color: var(--color-signal);
