@@ -20,7 +20,7 @@ const jetBrainsMono = JetBrains_Mono({
 
 const geist = GeistSans;
 
-const SITE_URL = "https://devguidetoai.com";
+const SITE_URL = "https://www.developersguide.ai";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
