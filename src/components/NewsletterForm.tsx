@@ -8,16 +8,19 @@ export function NewsletterForm() {
     "idle" | "loading" | "success" | "error"
   >("idle");
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email) return;
 
     setStatus("loading");
     try {
+      const formData = new FormData(e.currentTarget);
+      const website = formData.get("website")?.toString() ?? "";
+
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, website }),
       });
       if (!res.ok) throw new Error("Subscription failed");
       setStatus("success");
@@ -61,9 +64,21 @@ export function NewsletterForm() {
               className="flex flex-col sm:flex-row gap-3"
             >
               <input
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
+              <input
                 id="newsletter-email"
+                name="email"
                 type="email"
                 required
+                maxLength={254}
+                autoComplete="email"
+                inputMode="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="developer@company.com"

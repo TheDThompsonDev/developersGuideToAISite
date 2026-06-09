@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
     const { email } = result.data;
 
-    console.log(`[subscribe] Stub: received email ${email}`);
+    console.log("[subscribe] Stub: received a valid subscription request");
 
     return NextResponse.json({ success: true });
   } catch {

@@ -1,24 +1,118 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { isValidEmail } from "@/lib/validation";
+import { z } from "zod";
 import fs from "fs";
 import path from "path";
+
+export const runtime = "nodejs";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "mail@dthompsondev.com";
+const MAX_BODY_BYTES = 1024;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 5;
+const EMAIL_COOLDOWN_MS = 15 * 60 * 1000;
+
+const requestBuckets = new Map<string, { count: number; resetAt: number }>();
+const emailCooldowns = new Map<string, number>();
+
+const newsletterSchema = z.object({
+  email: z.string().trim().email().max(254).transform((email) => email.toLowerCase()),
+  website: z.string().max(100).optional(),
+});
+
+function getClientIp(request: Request) {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0]?.trim() || "unknown";
+  }
+
+  return request.headers.get("x-real-ip") || "unknown";
+}
+
+function isRateLimited(key: string) {
+  const now = Date.now();
+  const bucket = requestBuckets.get(key);
+
+  if (!bucket || bucket.resetAt <= now) {
+    requestBuckets.set(key, {
+      count: 1,
+      resetAt: now + RATE_LIMIT_WINDOW_MS,
+    });
+    return false;
+  }
+
+  bucket.count += 1;
+  return bucket.count > MAX_REQUESTS_PER_WINDOW;
+}
 
 export async function POST(request: Request) {
   try {
-    const { email } = await request.json();
+    const contentType = request.headers.get("content-type") || "";
+    if (!contentType.toLowerCase().includes("application/json")) {
+      return NextResponse.json(
+        { error: "Invalid request" },
+        { status: 415 },
+      );
+    }
 
-    if (!email || !isValidEmail(email)) {
+    const contentLength = Number(request.headers.get("content-length") || 0);
+    if (contentLength > MAX_BODY_BYTES) {
+      return NextResponse.json(
+        { error: "Request is too large" },
+        { status: 413 },
+      );
+    }
+
+    const clientIp = getClientIp(request);
+    if (isRateLimited(`ip:${clientIp}`)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 },
+      );
+    }
+
+    const rawBody = await request.text();
+    if (new TextEncoder().encode(rawBody).length > MAX_BODY_BYTES) {
+      return NextResponse.json(
+        { error: "Request is too large" },
+        { status: 413 },
+      );
+    }
+
+    let body: unknown;
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid request" },
+        { status: 400 },
+      );
+    }
+
+    const result = newsletterSchema.safeParse(body);
+
+    if (!result.success) {
       return NextResponse.json(
         { error: "A valid email is required" },
         { status: 400 },
       );
     }
 
+    const { email, website } = result.data;
+    if (website) {
+      return NextResponse.json({ success: true });
+    }
+
+    const now = Date.now();
+    const emailCooldownUntil = emailCooldowns.get(email);
+    if (emailCooldownUntil && emailCooldownUntil > now) {
+      return NextResponse.json(
+        { error: "Please wait before requesting another copy." },
+        { status: 429 },
+      );
+    }
     // Add contact to Resend list
     const { data, error } = await resend.contacts.create({
       email,
@@ -32,6 +126,8 @@ export async function POST(request: Request) {
         { status: 500 },
       );
     }
+
+    emailCooldowns.set(email, now + EMAIL_COOLDOWN_MS);
 
     // Send chapters 1 & 2 as a PDF attachment
     const pdfPath = path.join(
