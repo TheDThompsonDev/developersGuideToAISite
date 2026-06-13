@@ -1,18 +1,32 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { getClickContext, trackEvent } from "../lib/analytics";
 import { RetailerCards } from "./RetailerCards";
 
 type BuyBookModalProps = {
   children: React.ReactNode;
   className: string;
+  analyticsPlacement: string;
 };
 
-export function BuyBookModal({ children, className }: BuyBookModalProps) {
+export function BuyBookModal({
+  children,
+  className,
+  analyticsPlacement,
+}: BuyBookModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const titleId = useId();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const closeModal = useCallback((closeMethod: string) => {
+    trackEvent("buy_modal_close", {
+      close_method: closeMethod,
+      buy_opener_placement: analyticsPlacement,
+    });
+    setIsOpen(false);
+  }, [analyticsPlacement]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -23,7 +37,7 @@ export function BuyBookModal({ children, className }: BuyBookModalProps) {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setIsOpen(false);
+        closeModal("escape_key");
       }
     };
 
@@ -32,7 +46,7 @@ export function BuyBookModal({ children, className }: BuyBookModalProps) {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [isOpen]);
+  }, [closeModal, isOpen]);
 
   const modal = (
     <div
@@ -40,7 +54,7 @@ export function BuyBookModal({ children, className }: BuyBookModalProps) {
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
-          setIsOpen(false);
+          closeModal("backdrop");
         }
       }}
     >
@@ -53,7 +67,7 @@ export function BuyBookModal({ children, className }: BuyBookModalProps) {
         <button
           ref={closeButtonRef}
           type="button"
-          onClick={() => setIsOpen(false)}
+          onClick={() => closeModal("close_button")}
           aria-label="Close buy options"
           className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center border border-ink-3 bg-ink-2 text-bone hover:border-signal hover:text-signal"
         >
@@ -73,14 +87,30 @@ export function BuyBookModal({ children, className }: BuyBookModalProps) {
           </p>
         </div>
 
-        <RetailerCards />
+        <RetailerCards
+          placement="buy_modal"
+          sourcePlacement={analyticsPlacement}
+        />
       </div>
     </div>
   );
 
   return (
     <>
-      <button type="button" onClick={() => setIsOpen(true)} className={className}>
+      <button
+        type="button"
+        onClick={(event) => {
+          trackEvent("buy_modal_open", {
+            buy_opener_placement: analyticsPlacement,
+            button_text:
+              event.currentTarget.textContent?.replace(/\s+/g, " ").trim() ||
+              "Buy the Book",
+            ...getClickContext(event),
+          });
+          setIsOpen(true);
+        }}
+        className={className}
+      >
         {children}
       </button>
 

@@ -1,3 +1,7 @@
+"use client";
+
+import { getClickContext, trackEvent } from "../lib/analytics";
+
 const retailers = [
   {
     name: "Amazon",
@@ -30,6 +34,11 @@ const retailers = [
     icon: "book",
   },
 ] as const;
+
+type RetailerCardsProps = {
+  placement?: "retailers_section" | "buy_modal";
+  sourcePlacement?: string;
+};
 
 function RetailerIcon({ icon }: { icon: (typeof retailers)[number]["icon"] }) {
   if (icon === "bag") {
@@ -116,7 +125,10 @@ function RetailerIcon({ icon }: { icon: (typeof retailers)[number]["icon"] }) {
   );
 }
 
-export function RetailerCards() {
+export function RetailerCards({
+  placement = "retailers_section",
+  sourcePlacement,
+}: RetailerCardsProps) {
   return (
     <div className="grid md:grid-cols-3 gap-6 text-left">
       {retailers.map((r) => (
@@ -163,6 +175,17 @@ export function RetailerCards() {
             href={r.url}
             target="_blank"
             rel="noopener"
+            onClick={(event) => {
+              trackEvent("retailer_click", {
+                retailer: r.name,
+                retailer_role: r.role,
+                retailer_url: r.url,
+                link_text: r.cta,
+                click_placement: placement,
+                buy_opener_placement: sourcePlacement,
+                ...getClickContext(event),
+              });
+            }}
             className={`inline-flex items-center justify-center gap-2 px-6 py-3 font-medium transition-colors ${
               r.featured
                 ? "bg-ink text-signal hover:bg-ink-2"

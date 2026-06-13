@@ -24,7 +24,10 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="relative py-28 lg:py-36 bg-bone text-ink border-b border-ink-3 overflow-hidden">
+    <section
+      id="testimonials"
+      className="relative py-28 lg:py-36 bg-bone text-ink border-b border-ink-3 overflow-hidden"
+    >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-16 max-w-3xl">
           <p className="kicker mb-5" style={{ color: "var(--color-ink)" }}>

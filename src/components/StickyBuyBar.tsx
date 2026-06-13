@@ -52,6 +52,7 @@ export function StickyBuyBar() {
         <div className="flex items-center gap-4 w-full lg:w-auto">
           <div className="font-mono text-sm text-bone font-bold">$59</div>
           <BuyBookModal
+            analyticsPlacement="sticky_buy_bar"
             className="cta-brutal cta-brutal-primary px-6 py-3 text-sm flex-1 lg:flex-none text-center"
           >
             Buy Now

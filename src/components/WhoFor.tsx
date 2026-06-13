@@ -15,7 +15,7 @@ const notForYou = [
 
 export function WhoFor() {
   return (
-    <section className="relative py-28 lg:py-36 border-b border-ink-3">
+    <section id="audience" className="relative py-28 lg:py-36 border-b border-ink-3">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mb-16">
           <p className="kicker mb-5">Audience</p>

@@ -39,7 +39,7 @@ export function Retailers() {
           </div>
         </div>
 
-        <RetailerCards />
+        <RetailerCards placement="retailers_section" />
 
         <div className="mt-12 flex items-center justify-center gap-3 font-mono text-xs text-ash uppercase tracking-[0.2em]">
           <span className="h-px w-12 bg-ink-3" aria-hidden="true" />

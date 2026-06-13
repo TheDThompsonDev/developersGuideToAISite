@@ -18,7 +18,7 @@ export function SocialProof() {
   ];
 
   return (
-    <section className="relative border-b-4 border-ink bg-signal">
+    <section id="social-proof" className="relative border-b-4 border-ink bg-signal">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
           <span className="trust-badge trust-badge-inverse shadow-[4px_4px_0px_#000]">

@@ -50,6 +50,7 @@ export function Nav() {
               FAQ
             </a>
             <BuyBookModal
+              analyticsPlacement="nav_desktop"
               className="text-sm font-medium px-4 py-2 bg-signal text-ink hover:bg-bone transition-colors"
             >
               Buy the Book
@@ -77,6 +78,7 @@ export function Nav() {
               </a>
               <div className="border-t border-ink-3 mt-2 pt-2">
                 <BuyBookModal
+                  analyticsPlacement="nav_mobile"
                   className="block mx-2 px-3 py-2 text-sm font-medium bg-signal text-ink text-center"
                 >
                   Buy the Book

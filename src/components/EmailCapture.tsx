@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "../lib/analytics";
 
 export function EmailCapture() {
   const [email, setEmail] = useState("");
@@ -13,6 +14,11 @@ export function EmailCapture() {
     if (!email) return;
 
     setStatus("loading");
+    trackEvent("newsletter_submit", {
+      form_name: "chapter_preview",
+      lead_source: "free_chapters",
+    });
+
     try {
       const formData = new FormData(e.currentTarget);
       const website = formData.get("website")?.toString() ?? "";
@@ -24,8 +30,16 @@ export function EmailCapture() {
       });
       if (!res.ok) throw new Error("Subscription failed");
       setStatus("success");
+      trackEvent("generate_lead", {
+        form_name: "chapter_preview",
+        lead_source: "free_chapters",
+      });
     } catch {
       setStatus("error");
+      trackEvent("newsletter_error", {
+        form_name: "chapter_preview",
+        lead_source: "free_chapters",
+      });
     }
   }
 

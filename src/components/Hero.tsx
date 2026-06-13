@@ -3,7 +3,10 @@ import { BuyBookModal } from "./BuyBookModal";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b-2 border-ink bg-ink text-bone pt-24 pb-20 lg:pt-32 lg:pb-32">
+    <section
+      id="hero"
+      className="relative overflow-hidden border-b-2 border-ink bg-ink text-bone pt-24 pb-20 lg:pt-32 lg:pb-32"
+    >
       <div className="grid-overlay" aria-hidden="true" />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
@@ -59,6 +62,7 @@ export function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-4 rise rise-delay-3">
               <BuyBookModal
+                analyticsPlacement="hero_primary"
                 className="cta-brutal cta-brutal-primary px-8 py-5 text-lg"
               >
                 Buy the Book
