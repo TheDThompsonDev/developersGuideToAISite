@@ -32,35 +32,143 @@ function getLinkText(anchor: HTMLAnchorElement): string {
   return anchor.textContent?.replace(/\s+/g, " ").trim().slice(0, 80) || "unknown";
 }
 
+function getLinkType(anchor: HTMLAnchorElement): string {
+  const href = anchor.getAttribute("href") || "";
+
+  if (href.startsWith("#")) return "internal_anchor";
+  if (anchor.hostname && anchor.hostname !== window.location.hostname) {
+    return "outbound";
+  }
+  if (anchor.pathname !== window.location.pathname) return "internal_page";
+
+  return "same_page";
+}
+
+function getLinkCategory(anchor: HTMLAnchorElement): string {
+  const hostname = anchor.hostname.toLowerCase();
+  const pathname = anchor.pathname.toLowerCase();
+  const href = anchor.getAttribute("href") || "";
+
+  if (href.startsWith("#")) return "section_nav";
+  if (
+    hostname.includes("amazon.") ||
+    hostname.includes("nostarch.com") ||
+    hostname.includes("barnesandnoble.com") ||
+    pathname.includes("1718504764") ||
+    pathname.includes("developers-guide-to-ai")
+  ) {
+    return "retailer";
+  }
+  if (
+    hostname.includes("focus.dev") ||
+    hostname.includes("jerrymannel.me") ||
+    hostname.includes("dthompsondev.com")
+  ) {
+    return "author";
+  }
+  if (hostname.includes("nostarch.com")) return "publisher";
+
+  return anchor.hostname && anchor.hostname !== window.location.hostname
+    ? "external"
+    : "internal";
+}
+
 export function AnalyticsTracker() {
   const observedDepths = useRef(new Set<number>());
   const observedSections = useRef(new Set<string>());
   const observedBottom = useRef(false);
+  const linkClickCount = useRef(0);
+  const retailerLinkClickCount = useRef(0);
+  const hasReportedNoLinkClick = useRef(false);
+  const hasReportedNoRetailerClick = useRef(false);
 
   useEffect(() => {
     trackEvent("page_top_view", {
       scroll_depth_percent: 0,
     });
 
-    const handleInternalLinkClick = (event: MouseEvent) => {
+    const reportExitClickSummary = () => {
+      if (linkClickCount.current === 0 && !hasReportedNoLinkClick.current) {
+        hasReportedNoLinkClick.current = true;
+        trackEvent("no_link_click_session", {
+          link_click_count: 0,
+          reason: "page_hidden_or_unloaded",
+          transport_type: "beacon",
+        });
+      }
+
+      if (
+        retailerLinkClickCount.current === 0 &&
+        !hasReportedNoRetailerClick.current
+      ) {
+        hasReportedNoRetailerClick.current = true;
+        trackEvent("no_retailer_click_session", {
+          retailer_click_count: 0,
+          link_click_count: linkClickCount.current,
+          reason: "page_hidden_or_unloaded",
+          transport_type: "beacon",
+        });
+      }
+    };
+
+    const handleLinkClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
 
-      const anchor = target.closest<HTMLAnchorElement>('a[href^="#"]');
+      const anchor = target.closest<HTMLAnchorElement>("a[href]");
       if (!anchor) return;
 
-      const targetSection = anchor.getAttribute("href")?.replace("#", "") || "top";
+      const href = anchor.getAttribute("href") || "";
+      const linkType = getLinkType(anchor);
+      const linkCategory = getLinkCategory(anchor);
+      const linkText = getLinkText(anchor);
+      const clickSection = getAnalyticsSection(anchor);
 
-      trackEvent("internal_nav_click", {
-        link_text: getLinkText(anchor),
-        link_target: targetSection,
-        click_section: getAnalyticsSection(anchor),
+      linkClickCount.current += 1;
+      if (linkCategory === "retailer") {
+        retailerLinkClickCount.current += 1;
+      }
+
+      trackEvent("link_click", {
+        link_text: linkText,
+        link_url: anchor.href,
+        link_href: href,
+        link_type: linkType,
+        link_category: linkCategory,
+        click_section: clickSection,
+        link_click_count: linkClickCount.current,
+        retailer_click_count: retailerLinkClickCount.current,
         ...getClickContext(event),
       });
+
+      if (linkType === "internal_anchor") {
+        const targetSection = href.replace("#", "") || "top";
+
+        trackEvent("internal_nav_click", {
+          link_text: linkText,
+          link_target: targetSection,
+          click_section: clickSection,
+          link_click_count: linkClickCount.current,
+          ...getClickContext(event),
+        });
+      }
     };
 
-    document.addEventListener("click", handleInternalLinkClick, { capture: true });
-    return () => document.removeEventListener("click", handleInternalLinkClick, { capture: true });
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        reportExitClickSummary();
+      }
+    };
+
+    document.addEventListener("click", handleLinkClick, { capture: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", reportExitClickSummary);
+
+    return () => {
+      document.removeEventListener("click", handleLinkClick, { capture: true });
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", reportExitClickSummary);
+    };
   }, []);
 
   useEffect(() => {
