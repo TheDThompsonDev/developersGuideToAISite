@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 import { AnalyticsTracker } from "../components/AnalyticsTracker";
 import { BookSchema } from "../components/BookSchema";
 import { GA_MEASUREMENT_ID } from "../lib/analytics";
@@ -108,6 +109,7 @@ export default function RootLayout({
       className={`${bricolageGrotesque.variable} ${jetBrainsMono.variable} ${geist.variable}`}
     >
       <body className="antialiased bg-ink text-bone font-sans">
+        <Analytics />
         <AnalyticsTracker />
         <BookSchema siteUrl={SITE_URL} />
         {children}

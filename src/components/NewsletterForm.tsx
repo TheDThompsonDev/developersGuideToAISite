@@ -26,7 +26,12 @@ export function NewsletterForm() {
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, website }),
+        body: JSON.stringify({
+          email,
+          website,
+          formName: "newsletter",
+          leadSource: "newsletter_section",
+        }),
       });
       if (!res.ok) throw new Error("Subscription failed");
       setStatus("success");

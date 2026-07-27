@@ -1,7 +1,71 @@
+import { track as trackVercelEvent } from "@vercel/analytics";
+
 type AnalyticsPrimitive = string | number | boolean | null | undefined;
 
 type AnalyticsParams = Record<string, AnalyticsPrimitive>;
 type PointerLikeEvent = Pick<MouseEvent, "clientX" | "clientY">;
+
+const MAX_VERCEL_VALUE_LENGTH = 255;
+
+function truncateVercelValue(value: AnalyticsPrimitive) {
+  return typeof value === "string"
+    ? value.slice(0, MAX_VERCEL_VALUE_LENGTH)
+    : value;
+}
+
+function getVercelEventParams(
+  eventName: string,
+  params: AnalyticsParams,
+): AnalyticsParams {
+  const pick = (...keys: string[]) =>
+    Object.fromEntries(
+      keys
+        .map((key) => [key, truncateVercelValue(params[key])] as const)
+        .filter((entry) => entry[1] !== undefined),
+    );
+
+  switch (eventName) {
+    case "page_top_view":
+      return pick("page_path");
+    case "section_view":
+      return pick("section_id", "section_name");
+    case "scroll_depth":
+      return pick("scroll_depth_percent", "current_section");
+    case "page_bottom_reached":
+      return pick("page_path");
+    case "link_click":
+      return pick("link_href", "click_section");
+    case "internal_nav_click":
+      return pick("link_target", "click_section");
+    case "buy_modal_open":
+      return pick("buy_opener_placement", "current_section");
+    case "buy_modal_close":
+      return pick("close_method", "buy_opener_placement");
+    case "retailer_click": {
+      const clickPlacement = params.click_placement ?? "unknown";
+      const openerPlacement = params.buy_opener_placement;
+
+      return {
+        ...pick("retailer"),
+        conversion_source: truncateVercelValue(
+          openerPlacement
+            ? `${clickPlacement}:${openerPlacement}`
+            : clickPlacement,
+        ),
+      };
+    }
+    case "newsletter_submit":
+    case "newsletter_error":
+    case "generate_lead":
+      return pick("form_name", "lead_source");
+    case "no_link_click_session":
+      return pick("reason", "current_section");
+    case "no_retailer_click_session":
+      return pick("link_click_count", "current_section");
+    default:
+      return {};
+  }
+}
 
 declare global {
   interface Window {
@@ -108,6 +172,8 @@ export function trackEvent(
     ...getScrollContext(),
     ...eventParams,
   };
+
+  trackVercelEvent(eventName, getVercelEventParams(eventName, params));
 
   if (typeof window.gtag === "function") {
     window.gtag("event", eventName, params);

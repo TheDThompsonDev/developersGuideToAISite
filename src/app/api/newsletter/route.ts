@@ -3,6 +3,8 @@ import { Resend } from "resend";
 import { z } from "zod";
 import fs from "fs";
 import path from "path";
+import { track as trackVercelEvent } from "@vercel/analytics/server";
+import { trackNewsletterSignup } from "../../../lib/ga-measurement-protocol";
 
 export const runtime = "nodejs";
 
@@ -20,6 +22,8 @@ const emailCooldowns = new Map<string, number>();
 const newsletterSchema = z.object({
   email: z.string().trim().email().max(254).transform((email) => email.toLowerCase()),
   website: z.string().max(100).optional(),
+  formName: z.enum(["chapter_preview", "newsletter"]).optional(),
+  leadSource: z.enum(["free_chapters", "newsletter_section"]).optional(),
 });
 
 function getClientIp(request: Request) {
@@ -100,7 +104,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const { email, website } = result.data;
+    const {
+      email,
+      website,
+      formName = "chapter_preview",
+      leadSource = "free_chapters",
+    } = result.data;
     if (website) {
       return NextResponse.json({ success: true });
     }
@@ -198,6 +207,22 @@ export async function POST(request: Request) {
       console.error("Email send error:", JSON.stringify(emailError, null, 2));
       // Contact was still created — don't fail the whole request
     }
+
+    await Promise.all([
+      trackNewsletterSignup(request, {
+        formName,
+        leadSource,
+        status: emailError ? "contact_created_email_failed" : "success",
+      }),
+      trackVercelEvent(
+        "newsletter_signup",
+        {
+          form_name: formName,
+          lead_source: leadSource,
+        },
+        { request },
+      ),
+    ]);
 
     return NextResponse.json({ success: true, data });
   } catch (error) {
